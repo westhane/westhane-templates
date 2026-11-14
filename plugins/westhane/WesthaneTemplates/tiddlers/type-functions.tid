@@ -1,0 +1,14 @@
+title: $:/westhane/type-functions
+tags: $:/tags/Global
+code-body: yes
+
+<!-- Type helpers. A type is a tiddler tagged Type. Subtypes name their
+     supertype in parent (District -> Place). A content tiddler carries one
+     type tag; status tags (Incomplete, Inactive, Minor) are not tagged Type
+     and are ignored here. Needs $:/westhane/path-functions. -->
+
+\function type.kind(node) [<node>tags[]tag[Type]first[]]
+\function type.of(node) [<node>tags[]tag[Type]] :map:flat[function[path.chain],<currentTiddler>] +[unique[]]
+\function type.root(node) [function[type.of],<node>last[]]
+\function type.is(node,type) [function[type.of],<node>match<type>]
+\function type.members(type) [<type>] [function[path.under],<type>] +[tag[Type]tagging[]]

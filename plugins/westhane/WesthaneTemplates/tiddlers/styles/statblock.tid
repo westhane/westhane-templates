@@ -1,0 +1,65 @@
+title: $:/westhane/styles/statblock
+tags: $:/tags/Stylesheet
+code-body: yes
+
+\rules only macrocallinline
+
+/* Container query context so the two-column layout responds to the width of
+   the tiddler, not the browser window. TiddlyFlex columns can be narrow. */
+.pf-statblock-wrap {
+	container-type: inline-size;
+}
+
+.pf-statblock {
+	font-size: 0.95em;
+	line-height: 1.4;
+	padding-bottom: 0.7em;
+	column-count: 2;
+	column-gap: 2em;
+	column-rule: 1px solid <<colour table-border>>;
+}
+
+@container (max-width: 640px) {
+	.pf-statblock { column-count: 1; column-rule: none; }
+}
+
+/* Keep each heading with its contents when the columns break. */
+.pf-statblock .sb-group {
+	break-inside: avoid;
+	-webkit-column-break-inside: avoid;
+	page-break-inside: avoid;
+	margin-bottom: 0.9em;
+}
+
+.pf-statblock .sb-cr {
+	font-size: 1.1em;
+}
+
+.pf-statblock .sb-section {
+	margin: 0 0 0.35em;
+	padding: 0.1em 0.5em;
+	background: <<colour table-header-background>>;
+	border-bottom: 1px solid <<colour table-border>>;
+	font-variant: small-caps;
+	font-weight: bold;
+	letter-spacing: 0.06em;
+}
+
+.pf-statblock .sb-line,
+.pf-statblock .sb-entry {
+	margin: 0.15em 0;
+	padding-left: 1.2em;
+	text-indent: -1.2em;
+}
+
+.pf-statblock .sb-entry {
+	margin: 0.3em 0;
+}
+
+.pf-statblock .sb-source {
+	column-span: all;
+	margin-top: 0.6em;
+	padding-top: 0.4em;
+	font-size: 0.82em;
+	color: <<colour muted-foreground>>;
+}

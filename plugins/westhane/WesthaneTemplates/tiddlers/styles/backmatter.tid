@@ -1,0 +1,58 @@
+title: $:/westhane/styles/backmatter
+tags: $:/tags/Stylesheet
+created: 20261110210000000
+modified: 20261111000000000
+
+\rules only macrocallinline
+
+/* Children list in $:/westhane/Part/Backmatter. Box and header match the
+   Timeline box ($:/westhane/styles/timeline). */
+.westhane-children-box {
+	clear: both;
+	margin-top: 1em;
+}
+
+.westhane-children-header {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+.westhane-children {
+	margin: 0.3em 0 0 0;
+}
+
+/* Keep each entry (link and pills) whole within one column */
+.westhane-children li {
+	break-inside: avoid;
+}
+
+/* "Mentioned" entry: built-in triangle hidden, one drawn after the count
+   (as in the sidebar's Children) */
+.westhane-children-mentioned > details > summary {
+	cursor: pointer;
+	display: block;
+	list-style: none;
+}
+
+.westhane-children-mentioned > details > summary::-webkit-details-marker {
+	display: none;
+}
+
+.westhane-children-toggle::after {
+	content: "\25B8";
+}
+
+.westhane-children-mentioned > details[open] .westhane-children-toggle::after {
+	content: "\25BE";
+}
+
+/* Backmatter timeline entries 1px smaller than body text (header unchanged).
+   Timelines placed in a tiddler's text with <<timeline>> are not affected. */
+.westhane-backmatter-timeline .westhane-timeline {
+	font-size: calc(1em - 1px);
+}
+
+.westhane-children-mentioned ul {
+	margin: 0;
+	padding-left: 1.2em;
+}

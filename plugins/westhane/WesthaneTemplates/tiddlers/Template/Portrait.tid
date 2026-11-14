@@ -1,0 +1,16 @@
+title: $:/westhane/Template/Portrait
+code-body: yes
+
+\whitespace trim
+
+<!-- Generic portrait body. Applied via the Portrait cascades to tiddlers that
+     have an image field and a tag listed in $:/westhane/config/PortraitTags.
+     Renders the portrait, then the normal body for the current layout. -->
+
+<div class="portrait-view">
+
+<$image source={{!!image}} class="portrait"/>
+
+<$transclude $tiddler={{{ [{$:/layout}match[$:/plugins/BTC/TiddlyFlex/ui/Layout]then[$:/plugins/BTC/TiddlyFlex/ui/ViewTemplate/body/default]else[$:/core/ui/ViewTemplate/body/default]] }}} $mode="block"/>
+
+</div>

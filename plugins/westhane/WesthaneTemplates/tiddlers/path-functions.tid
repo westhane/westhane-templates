@@ -1,0 +1,17 @@
+title: $:/westhane/path-functions
+tags: $:/tags/Global
+code-body: yes
+
+<!-- Path helpers. parent holds exactly one plain title, so every tiddler has
+     a single line of ancestors. Follows up to 9 levels; cycles stop safely.
+     path.of is for display only: titles may contain "/", so filter on
+     path.ancestors / path.under, not on the joined string. -->
+
+\function path.upstep() [<currentTiddler>] [<currentTiddler>get[parent]]
+\function path.chain(node) [<node>] :map:flat[function[path.upstep]] +[unique[]] :map:flat[function[path.upstep]] +[unique[]] :map:flat[function[path.upstep]] +[unique[]] :map:flat[function[path.upstep]] +[unique[]] :map:flat[function[path.upstep]] +[unique[]] :map:flat[function[path.upstep]] +[unique[]] :map:flat[function[path.upstep]] +[unique[]] :map:flat[function[path.upstep]] +[unique[]]
+\function path.ancestors(node) [function[path.chain],<node>] +[reverse[]] -[<node>]
+\function path.root(node) [function[path.chain],<node>] +[last[]]
+\function path.of(node) [function[path.chain],<node>] +[reverse[]join[ / ]]
+\function path.depth(node) [function[path.chain],<node>] +[count[]]
+\function path.downstep() [<currentTiddler>] [all[tiddlers]field:parent<currentTiddler>]
+\function path.under(root) [<root>] :map:flat[function[path.downstep]] +[unique[]] :map:flat[function[path.downstep]] +[unique[]] :map:flat[function[path.downstep]] +[unique[]] :map:flat[function[path.downstep]] +[unique[]] :map:flat[function[path.downstep]] +[unique[]] :map:flat[function[path.downstep]] +[unique[]] :map:flat[function[path.downstep]] +[unique[]] :map:flat[function[path.downstep]] +[unique[]] -[<root>]

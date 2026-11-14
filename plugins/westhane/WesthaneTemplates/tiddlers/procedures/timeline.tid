@@ -1,0 +1,20 @@
+title: $:/westhane/procedures/timeline
+tags: $:/tags/Global
+created: 20261029230000000
+modified: 20261030130000000
+
+\procedure date.fmt.day() [UTC]YYYY, MMM DDth
+\procedure date.fmt.month() [UTC]YYYY, MMM
+
+\function date.day() [<currentTiddler>regexp[^\d{4}-\d\d-\d\d(-\d\d)?$]!regexp[^\d{4}-\d\d-00]split[-]first[3]join[]addsuffix[000000000]format:date<date.fmt.day>]
+\function date.month() [<currentTiddler>regexp[^\d{4}-\d\d(-00-\d\d)?$]split[-]first[2]join[]addsuffix[01000000000]format:date<date.fmt.month>]
+\function date.label() [function[date.day]] ~[function[date.month]] ~[<currentTiddler>]
+
+\procedure timeline(dates)
+<ul class="westhane-timeline">
+<$list filter="[subfilter<dates>sort[]]">
+<li><$link>''<<date.label>>''</$link>: <$transclude/>
+</li>
+</$list>
+</ul>
+\end

@@ -1,0 +1,171 @@
+title: $:/westhane/Template/System
+code-body: yes
+modified: 20261110230000000
+
+\whitespace trim
+
+\function system.typemembers() [all[current]tag[Type]] :map:flat[function[type.members],<currentTiddler>]
+\function system.poolmembers() [enlist{!!pool}tag[Type]] :map:flat[function[type.members],<currentTiddler>]
+\function system.sections() [enlist{!!pool}tag[System]] -[all[current]]
+\function system.members() [function[system.typemembers]] [function[system.poolmembers]] ~[all[current]!tag[Type]tagging[]] +[unique[]]
+\function system.subtypes() [function[path.under],<currentTiddler>tag[Type]]
+\function tree.inner() [enlist<treeSet>get[parent]unique[]] :intersection[enlist<treeSet>] :map:flat[all[tiddlers]field:parent<currentTiddler>] :intersection[enlist<treeSet>]
+\function tree.kids(node) [all[tiddlers]field:parent<node>] :intersection[enlist<treeSet>]
+\function tree.tops() [enlist<treeSet>] -[function[tree.inner]] +[sort[]]
+
+<!-- Index view for System, Type and Flag tiddlers, including Dashboard.
+     Members:
+       Type tiddler  - every member of the type, subtypes included.
+       pool field    - every member of each Type named in pool (Dashboard).
+                       System tiddlers named in pool are shown as folds
+                       at the end (e.g. Incomplete).
+       otherwise     - what is tagged with this tiddler.
+     Members are drawn as a tree using parent; a member whose parent is not
+     in the list is top-level. Members tagged with a Flag (other than this
+     tiddler) leave the main tree and are listed under that Flag, which is
+     added as an expandable entry at the end of the list.
+     Pills show type and status everywhere except on Type tiddlers, which
+     show (Inc.) instead. Open/closed state lives under $:/temp/. -->
+
+\procedure tree-node(node,level:"1")
+<$let st={{{ [[$:/temp/westhane/tree/]addsuffix<treeKey>addsuffix[/]addsuffix<node>] }}} open={{{ [<st>get[text]match[open]] }}} kids={{{ [all[tiddlers]field:parent<node>limit[1]] :then[function[tree.kids],<node>count[]] :else[[0]] }}}>
+<li>
+<%if [<kids>compare:number:gt[0]] %>
+<$button class="tc-btn-invisible westhane-tree-toggle" set=<<st>> setTo={{{ [<open>!is[blank]then[close]else[open]] }}}>
+<%if [<open>!is[blank]] %>{{$:/core/images/down-arrow}}<%else%>{{$:/core/images/right-arrow}}<%endif%>
+</$button>
+<%else%>
+<span class="westhane-tree-spacer"/>
+<%endif%>
+<$link to=<<node>>><$text text=<<node>>/></$link><%if [<westhane.pills>!match[yes]then<node>tag[Incomplete]] %><$text text=" (Inc.)"/><%endif%>
+<%if [<westhane.pills>match[yes]] %><$transclude $variable="westhane.abbr-pills" tiddler=<<node>>/><%endif%>
+<%if [<open>!is[blank]then<kids>compare:number:gt[0]then<level>compare:number:lt[10]] %>
+<ul>
+<$list filter="[function[tree.kids],<node>sort[]]" variable="child">
+<$transclude $variable="tree-node" node=<<child>> level={{{ [<level>add[1]] }}}/>
+</$list>
+</ul>
+<%endif%>
+</li>
+</$let>
+\end
+
+\procedure flag-node(node)
+<!-- A Flag as a tree entry: its children are the members tagged with it,
+     drawn as their own tree. -->
+<$let st={{{ [[$:/temp/westhane/tree/]addsuffix<treeKey>addsuffix[/]addsuffix<node>] }}}
+	open={{{ [<st>get[text]match[open]] }}}
+	flagSet={{{ [enlist<members>tag<node>format:titlelist[]join[ ]] }}}
+	flagKey={{{ [<treeKey>addsuffix[/flag/]addsuffix<node>] }}}>
+<li class="westhane-tree-flag">
+<$button class="tc-btn-invisible westhane-tree-toggle" set=<<st>> setTo={{{ [<open>!is[blank]then[close]else[open]] }}}>
+<%if [<open>!is[blank]] %>{{$:/core/images/down-arrow}}<%else%>{{$:/core/images/right-arrow}}<%endif%>
+</$button>
+<$link to=<<node>>><$text text=<<node>>/></$link>
+<%if [<open>!is[blank]] %>
+<$let treeSet=<<flagSet>> treeKey=<<flagKey>>>
+<ul>
+<$list filter="[function[tree.tops]]" variable="child">
+<$transclude $variable="tree-node" node=<<child>>/>
+</$list>
+</ul>
+</$let>
+<%endif%>
+</li>
+</$let>
+\end
+
+\procedure system-tree(filter,key,extra)
+<!-- Top-level entries, then the titles in extra (Flags), are dealt into
+     fixed columns (filled top to bottom, like CSS columns) so expanding a
+     branch only lengthens its own column. westhane.columns picks the count. -->
+<$let treeSet={{{ [subfilter<filter>format:titlelist[]join[ ]] }}}
+	treeKey={{{ [<currentTiddler>addsuffix[/]addsuffix<key>] }}}
+	colClass={{{ [<westhane.columns>!is[blank]] ~[[threecolumns]] }}}
+	colN={{{ [<colClass>match[twocolumns]then[2]] [<colClass>match[fourcolumns]then[4]] [<colClass>match[fivecolumns]then[5]] ~[[3]] }}}
+	tops={{{ [function[tree.tops]] [enlist<extra>] +[format:titlelist[]join[ ]] }}}
+	perCol={{{ [enlist<tops>count[]divide<colN>ceil[]] }}}>
+<div class="westhane-tree-columns">
+<$list filter="[range<colN>]" variable="col">
+<$let skip={{{ [<col>subtract[1]multiply<perCol>] }}}>
+<ul class="westhane-tree">
+<$list filter="[enlist<tops>rest<skip>limit<perCol>]" variable="node">
+<%if [enlist<extra>match<node>] %>
+<$transclude $variable="flag-node" node=<<node>>/>
+<%else%>
+<$transclude $variable="tree-node" node=<<node>>/>
+<%endif%>
+</$list>
+</ul>
+</$let>
+</$list>
+</div>
+</$let>
+\end
+
+\procedure system-fold(label,filter,key)
+<$let fst={{{ [[$:/temp/westhane/fold/]addsuffix<currentTiddler>addsuffix[/]addsuffix<key>] }}}
+	fopen={{{ [<fst>get[text]match[open]] }}}>
+<%if [subfilter<filter>limit[1]] %>
+<div class="westhane-fold">
+<div class="westhane-fold-summary">
+<$button class="tc-btn-invisible dashboard-toggle" set=<<fst>> setTo={{{ [<fopen>!is[blank]then[close]else[open]] }}}>
+<%if [<fopen>!is[blank]] %>{{$:/core/images/down-arrow}}<%else%>{{$:/core/images/right-arrow}}<%endif%>
+<$text text=<<label>>/>
+</$button>
+</div>
+<%if [<fopen>!is[blank]] %>
+<$transclude $variable="system-tree" filter=<<filter>> key=<<key>>/>
+<%endif%>
+</div>
+<%endif%>
+</$let>
+\end
+
+\procedure system-section(section)
+<!-- A System tiddler named in pool, shown as a fold holding its own view. -->
+<$let fst={{{ [[$:/temp/westhane/fold/]addsuffix<currentTiddler>addsuffix[/section/]addsuffix<section>] }}}
+	fopen={{{ [<fst>get[text]match[open]] }}}>
+<div class="westhane-fold">
+<div class="westhane-fold-summary">
+<$button class="tc-btn-invisible dashboard-toggle" set=<<fst>> setTo={{{ [<fopen>!is[blank]then[close]else[open]] }}}>
+<%if [<fopen>!is[blank]] %>{{$:/core/images/down-arrow}}<%else%>{{$:/core/images/right-arrow}}<%endif%>
+<$text text=<<section>>/>
+</$button>
+<$text text=" ("/><$link to=<<section>>>link</$link><$text text=")"/>
+</div>
+<%if [<fopen>!is[blank]] %>
+<$let currentTiddler=<<section>>>
+<$transclude $tiddler="$:/westhane/Template/System" $mode="block"/>
+</$let>
+<%endif%>
+</div>
+</$let>
+\end
+
+\procedure system-body()
+<$transclude $variable="system-tree" filter="[enlist<main>]" key="main" extra=<<flags>>/>
+<$transclude $variable="system-fold" label="Types" filter="[function[system.subtypes]]" key="types"/>
+<$list filter="[function[system.sections]]" variable="section">
+<$transclude $variable="system-section" section=<<section>>/>
+</$list>
+\end
+
+<$transclude $field="text" $mode="block"/>
+
+<$let westhane.pills={{{ [all[current]!tag[Type]then[yes]] }}}
+	members={{{ [function[system.members]format:titlelist[]join[ ]] }}}
+	flags={{{ [tag[Flag]] -[all[current]] :filter[enlist<members>tag<currentTiddler>limit[1]] +[format:titlelist[]join[ ]] }}}
+	main={{{ [enlist<members>] -[enlist<flags>tagging[]] +[format:titlelist[]join[ ]] }}}>
+<%if [<westhane.pills>match[yes]] %>
+<$wikify name="westhane.pal.bg" text="<<colour tag-background>>">
+<$wikify name="westhane.pal.a" text="<<colour foreground>>">
+<$wikify name="westhane.pal.b" text="<<colour background>>">
+<<system-body>>
+</$wikify>
+</$wikify>
+</$wikify>
+<%else%>
+<<system-body>>
+<%endif%>
+</$let>

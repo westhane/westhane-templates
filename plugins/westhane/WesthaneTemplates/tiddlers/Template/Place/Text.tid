@@ -1,0 +1,31 @@
+title: $:/westhane/Template/Place/Text
+caption: Text
+code-body: yes
+modified: 20261110210000000
+
+<!-- Text tab (body1) of a Place: sidebar ($:/westhane/Template/Info),
+     frontmatter, the text, then backmatter. None of it appears on the Map. -->
+
+<div class="westhane-info-host">
+
+<$let infoTiddler=<<placeTiddler>>><$transclude $tiddler="$:/westhane/Template/Info" $mode="block"/></$let>
+
+<$let frontmatterTiddler=<<placeTiddler>>>
+
+<$transclude $tiddler="$:/westhane/Part/Frontmatter" $mode="block"/>
+
+</$let>
+
+<$transclude $tiddler=<<placeTiddler>> $mode="block">
+
+<$transclude $tiddler="$:/language/MissingTiddler/Hint"/>
+
+</$transclude>
+
+</div>
+
+<$let backmatterTiddler=<<placeTiddler>>>
+
+<$transclude $tiddler="$:/westhane/Part/Backmatter" $mode="block"/>
+
+</$let>

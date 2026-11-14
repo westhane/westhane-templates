@@ -1,0 +1,37 @@
+title: $:/westhane/Template/Timeline
+code-body: yes
+created: 20261030130000000
+modified: 20261102235900000
+
+\whitespace trim
+
+<!-- Automatic timeline at the bottom of a tiddler. Transclude with
+     timelineTiddler set to the tiddler being shown.
+     - Date tiddlers: shown only when the tiddler's text is empty; lists every
+       non-empty Date tiddler below it in the parent tree (path.under), at any
+       depth, expanded, with no header.
+     - Any other tiddler tagged with a Type: lists the Date tiddlers that link
+       to it or to one of its aliases, under a "Timeline" header, leaving out any date whose title is
+       written as [[title]] inside a <<timeline ...>> call in the tiddler's
+       own text. Filters inside those calls are not run, for speed.
+     An alias counts only when, as in $:/plugins/mklauber/aliases, no tiddler
+     has that title and no other tiddler lists it in its aliases field.
+     Nothing is shown when the list would be empty. -->
+
+\procedure tl.children() [function[path.under],<timelineTiddler>tag[Date]has[text]]
+\procedure tl.open() [[
+\procedure tl.close() ]]
+\function tl.listed() [<timelineTiddler>get[text]splitregexp[<<timeline\s+]rest[]] :map:flat[splitregexp[>>]first[]split<tl.open>rest[]] :map[split<tl.close>first[]]
+\function tl.names() [<timelineTiddler>get[aliases]enlist-input[]] :filter[!is[tiddler]] :filter[all[tiddlers]contains:aliases<currentTiddler>count[]match[1]] [<timelineTiddler>]
+\procedure tl.links() [function[tl.names]backlinks[]tag[Date]] -[function[tl.listed]]
+
+<%if [<timelineTiddler>tag[Date]] %>
+<%if [<timelineTiddler>!has[text]] :filter[subfilter<tl.children>limit[1]] %>
+<$transclude $variable="timeline" dates=<<tl.children>>/>
+<%endif%>
+<%elseif [<timelineTiddler>tags[]tag[Type]] :filter[subfilter<tl.links>limit[1]] %>
+<div class="westhane-timeline-box">
+<div class="westhane-timeline-header">Timeline</div>
+<$transclude $variable="timeline" dates=<<tl.links>>/>
+</div>
+<%endif%>

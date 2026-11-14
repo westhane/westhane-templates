@@ -1,0 +1,67 @@
+title: $:/westhane/styles/tree
+tags: $:/tags/Stylesheet
+code-body: yes
+modified: 20261110180000000
+
+\rules only macrocallinline
+
+/* Tree lists in $:/westhane/Template/System. The outer div sets the column
+   count; each top-level branch is kept whole within one column. */
+.westhane-tree,
+.westhane-tree ul {
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+}
+
+.westhane-tree > li {
+	break-inside: avoid;
+	-webkit-column-break-inside: avoid;
+	page-break-inside: avoid;
+}
+
+/* Each entry reserves a gutter for its marker, so a long title that wraps
+   keeps its indent instead of running back under the arrow or bullet.
+   Child lists sit inside that gutter, so children line up under the
+   parent's title. */
+.westhane-tree li {
+	position: relative;
+	margin: 0.1em 0;
+	padding-left: 1.2em;
+}
+
+.westhane-tree-toggle,
+.westhane-tree-spacer {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 1em;
+	margin: 0;
+	padding: 0;
+	line-height: inherit;
+	text-align: center;
+}
+
+.westhane-tree-toggle svg {
+	width: 0.7em;
+	height: 0.7em;
+	vertical-align: middle;
+	fill: <<colour muted-foreground>>;
+}
+
+/* Entries without children get a bullet; entries with children keep
+   their expand arrow. */
+.westhane-tree-spacer::before {
+	content: "\2022";
+	color: <<colour muted-foreground>>;
+}
+
+.westhane-fold {
+	margin-top: 0.8em;
+}
+
+.westhane-fold > summary,
+.westhane-fold-summary {
+	cursor: pointer;
+	margin-bottom: 0.4em;
+}

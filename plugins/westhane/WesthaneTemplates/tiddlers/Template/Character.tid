@@ -1,0 +1,8 @@
+title: $:/westhane/Template/Character
+type: text/vnd.tiddlywiki
+code-body: yes
+
+\whitespace trim
+<$let characterTiddler=<<currentTiddler>> tabState={{{ [<currentTiddler>addprefix[$:/temp/character-tab/]] }}} defaultTab={{{ [<currentTiddler>get[text]trim[]!is[blank]then[$:/westhane/Template/Character/Text]else[$:/westhane/Template/Character/Statistics]] }}}>
+<$macrocall $name="tabs" tabsList="[[$:/westhane/Template/Character/Text]] [[$:/westhane/Template/Character/Statistics]]" default=<<defaultTab>> explicitState=<<tabState>>/>
+</$let>

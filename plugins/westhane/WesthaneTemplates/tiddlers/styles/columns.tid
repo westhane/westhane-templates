@@ -1,0 +1,25 @@
+title: $:/westhane/styles/columns
+tags: $:/tags/Stylesheet
+
+.twocolumns {
+display:block;
+column-count:2;
+-moz-column-count:2;
+-webkit-column-count:2;}
+
+.threecolumns {
+display:block;
+column-count:3;
+-moz-column-count:3;
+-webkit-column-count:3;}
+
+.fourcolumns {
+display:block;
+column-count:4;
+-moz-column-count:4;
+-webkit-column-count:4;}
+
+.fivecolumns { display:block;
+column-count:5;
+-moz-column-count:5;
+-webkit-column-count:5;}

@@ -1,0 +1,42 @@
+title: $:/westhane/styles/timeline
+tags: $:/tags/Stylesheet
+code-body: yes
+created: 20261030130000000
+modified: 20261030221403027
+
+\rules only macrocallinline
+
+/* Box added by $:/westhane/Template/Timeline */
+.westhane-timeline-box {
+	clear: both;
+	margin-top: 1em;
+}
+
+.westhane-timeline-header {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+/* Hanging indent: the first line (bullet and date) sticks out one tab;
+   wrapped lines are stepped in. Change both 2em values together. */
+.westhane-timeline {
+	list-style: none;
+	padding-left: 0;
+}
+
+.westhane-timeline > li {
+	padding-left: 3em;
+	text-indent: -3em;
+}
+
+.westhane-timeline > li::before {
+	content: "\2022";
+	display: inline-block;
+	width: 1em;
+	text-indent: 0;
+}
+
+/* Stop the negative indent leaking into blocks inside an entry */
+.westhane-timeline > li * {
+	text-indent: 0;
+}

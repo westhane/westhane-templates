@@ -1,0 +1,5 @@
+title: $:/westhane/Template/Character/Cascade
+tags: $:/tags/ViewTemplateBodyFilter
+list-before: $:/config/ViewTemplateBodyFilters/default
+
+[all[current]] :filter[function[type.is],<currentTiddler>,[Character]] +[then[$:/westhane/Template/Character]]

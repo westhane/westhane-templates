@@ -1,0 +1,27 @@
+title: $:/westhane/styles/portrait
+tags: $:/tags/Stylesheet
+type: text/css
+code-body: yes
+created: 20261023233838365
+modified: 20261023233840526
+
+\rules only macrocallinline
+
+/* Wrapper: contains the float so it can't spill into the next tiddler */
+.portrait-view {
+	display: flow-root;
+}
+
+.portrait {
+	float: right;
+	width: 20%;
+	height: auto;
+	margin: 0 0 0.5em 1em;
+	border-radius: 4px;
+}
+
+/* Tab divider line: own formatting context, so it stops at the
+   portrait's edge instead of running underneath it */
+.portrait-view .tc-tab-divider {
+	display: flow-root;
+}

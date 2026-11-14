@@ -1,0 +1,25 @@
+title: $:/plugins/westhane/WesthaneTemplates/readme
+
+! WesthaneTemplates
+Custom view templates for the Impossible Lands wiki.
+
+* Character (Text / Statistics tabs, portrait): tag `Character`
+* Place (Text / Map tabs, parent/child sidebar, hooks): tag `Place`
+* System (tag-index lists, Minor / Inactive folds): tag `System`
+* Standard: every other content tiddler (info box, frontmatter, body, backmatter)
+* Inactive: tiddlers tagged `Inactive`, ahead of all the others
+
+Shared parts:
+
+* Info box ([[$:/westhane/Template/Info]]): portrait for types listed in [[$:/westhane/config/PortraitTags]]
+* Frontmatter ([[$:/westhane/Part/Frontmatter]]): `summarytext` field and "Part of [[Parent]]"
+* Backmatter ([[$:/westhane/Part/Backmatter]]): children list with abbreviation pills, then the timeline
+* Timeline ([[$:/westhane/Template/Timeline]], `<<timeline>>` procedure)
+
+Each template has a core cascade (`…/Cascade`) and a TiddlyFlex cascade (`$:/westhane/TiddlyFlex/ViewTemplateBodyFilter/…`).
+
+!! External dependencies
+The Map tab needs flibbles/graph and the `$:/westhane/TiddlyGraph/*` and `$:/westhane/vis-network/*` tiddlers, which are not in this plugin.
+
+!! Contents
+<<list-links "[[$:/plugins/westhane/WesthaneTemplates]plugintiddlers[]sort[]]">>

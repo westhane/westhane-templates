@@ -1,0 +1,91 @@
+title: $:/westhane/tag-paths
+tags: $:/tags/Global
+list-after: 
+code-body: yes
+
+<!-- Tag pills show and sort by the tag's full path (path.of), e.g.
+     "Place / District". Tagged $:/tags/Global with an empty list-after so it
+     is imported last and these definitions replace the originals:
+       tag-pill-inner          core $:/core/macros/tag (label) - every tag pill
+       tdfp-tiddlyflex-viewtemplate-tags   TiddlyFlex view template (sort)
+       tag-body-inner, edit-tags-template  TiddlyFlex edit template (label, sort,
+                                           picker list)
+     The picker dropdown label is in $:/core/ui/TagPickerTagTemplate (overridden
+     in this plugin). Copied from TiddlyWiki 5.4.0 / TiddlyFlex as installed;
+     re-check after upgrading either. -->
+
+\procedure westhane-tag-list() [tags[]] [all[shadows+tiddlers]tag[Type]] +[unique[]] :sort:string[function[path.of],<currentTiddler>]
+
+\define tag-pill-inner(tag,icon,colour,fallbackTarget,colourA,colourB,element-tag,element-attributes,actions)
+\whitespace trim
+<$let
+	foregroundColor=<<contrastcolour target:"""$colour$""" fallbackTarget:"""$fallbackTarget$""" colourA:"""$colourA$""" colourB:"""$colourB$""">>
+	backgroundColor=<<__colour__>>
+>
+<$element-tag$
+	$element-attributes$
+	class="tc-tag-label tc-btn-invisible"
+	style=<<tag-pill-styles>>
+>
+	<<__actions__>>
+	<$transclude tiddler=<<__icon__>>/>
+	<span class={{{ [<__tag__>is[missing]then[tc-tag-missing]else[tc-tag-exists]] }}}>
+		<$text text={{{ [function[path.of],<__tag__>] ~[<__tag__>] }}}/>
+	</span>
+</$element-tag$>
+</$let>
+\end
+
+\procedure tdfp-tiddlyflex-viewtemplate-tags()
+\whitespace trim
+<$reveal type="nomatch" stateTitle=<<folded-state>> text="hide" tag="div" retain="yes" animate="yes">
+<div class="tc-tags-wrapper"><$list filter="[all[current]tags[]] :sort:string[function[path.of],<currentTiddler>]" template="$:/plugins/BTC/TiddlyFlex/ui/TagTemplate" storyview="tiddlypop"/></div>
+</$reveal>
+\end
+
+\procedure tag-body-inner(colour,fallbackTarget,colourA,colourB,icon,tagField:"tags")
+\whitespace trim
+<$wikify name="foregroundColor"
+	text="""<$macrocall $name="contrastcolour"
+		target=<<colour>>
+		fallbackTarget=<<fallbackTarget>>
+		colourA=<<colourA>>
+		colourB=<<colourB>>/>
+	"""
+>
+	<$let backgroundColor=<<colour>> >
+		<span class="tc-tag-label tc-tag-list-item tc-small-gap-right"
+			data-tag-title=<<currentTiddler>>
+			style.color=<<foregroundColor>>
+			style.fill=<<foregroundColor>>
+			style.background-color=<<backgroundColor>>
+		>
+			<$transclude tiddler=<<icon>>/>
+			<$text text={{{ [function[path.of],<currentTiddler>] ~[<currentTiddler>] }}}/>
+			<$button class="tc-btn-invisible tc-remove-tag-button"
+				style.fill=<<foregroundColor>>
+			>
+				<$action-listops $tiddler=<<saveTiddler>> $field=<<tagField>> $subfilter="-[{!!title}]"/>
+				{{$:/core/images/close-button}}
+			</$button>
+		</span>
+	</$let>
+</$wikify>
+\end
+
+\procedure edit-tags-template(tagField:"tags")
+\whitespace trim
+<div class="tc-edit-tags">
+	<$list filter="[<currentTiddler>get<tagField>enlist-input[]] :sort:string[function[path.of],<currentTiddler>]" storyview="tiddlypop">
+		<$macrocall $name="tag-body"
+			colour={{{ [<currentTiddler>] :cascade[all[shadows+tiddlers]tag[$:/tags/TiddlerColourFilter]!is[draft]get[text]] }}}
+			palette={{$:/palette}}
+			icon={{{ [<currentTiddler>] :cascade[all[shadows+tiddlers]tag[$:/tags/TiddlerIconFilter]!is[draft]get[text]] }}}
+			tagField=<<tagField>>
+		/>
+	</$list>
+	<$let tabIndex={{$:/config/EditTabIndex}} cancelPopups="yes">
+		<$macrocall $name="tag-picker" tagField=<<tagField>> tagListFilter=<<westhane-tag-list>>/>
+	</$let>
+</div>
+\end

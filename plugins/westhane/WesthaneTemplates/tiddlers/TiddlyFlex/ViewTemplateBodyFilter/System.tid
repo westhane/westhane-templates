@@ -1,0 +1,6 @@
+title: $:/westhane/TiddlyFlex/ViewTemplateBodyFilter/System
+tags: $:/tags/TiddlyFlex/ViewTemplateBodyFilter
+list-before: $:/config/TiddlyFlex/ViewTemplateBodyFilters/default
+modified: 20261110230000000
+
+[all[current]tag[System]] [all[current]tag[Type]] [all[current]tag[Flag]] +[then[$:/westhane/Template/System]]

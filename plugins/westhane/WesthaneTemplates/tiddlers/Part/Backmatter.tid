@@ -1,0 +1,65 @@
+title: $:/westhane/Part/Backmatter
+code-body: yes
+created: 20261110210000000
+modified: 20261110233000000
+
+\whitespace trim
+
+<!-- Backmatter part: generated content after body1. Transclude with
+     backmatterTiddler set to the tiddler being shown.
+     1. Children: a bulleted list of the tiddlers whose parent is this one,
+        each with its abbreviation pills (as on the Dashboard), in three
+        columns (.threecolumns, $:/westhane/styles/columns). Not
+        collapsible. Left out when there are none.
+        Children linked from the tiddler's text are taken out of the list
+        and shown instead under a closed "Mentioned (N)" entry at its end,
+        which appears only when there are any.
+        Date children are left out entirely (list and Mentioned); they
+        belong to the timeline.
+        Children listed in the text by a filter also count as mentioned:
+        every filter="..." attribute in the text that mentions "parent" is
+        run with currentTiddler set to the backmatterTiddler.
+     2. Timeline: $:/westhane/Template/Timeline, entries 1px smaller than
+        body text (.westhane-backmatter-timeline).
+     Add new backmatter content here, in display order. -->
+
+\function back.textfilters() [<backmatterTiddler>get[text]splitregexp[filter="]rest[]] :map[split["]first[]] +[search:title[parent]]
+\function back.runfilter(f) [<backmatterTiddler>] :map:flat[subfilter<f>]
+\function back.listed() [function[back.textfilters]] :map:flat[function[back.runfilter],<currentTiddler>]
+\function back.children() [all[tiddlers]field:parent<backmatterTiddler>!tag[Date]sort[]]
+\function back.referenced() [<backmatterTiddler>links[]] [function[back.listed]]
+\function back.mentioned() [function[back.children]] :intersection[function[back.referenced]] +[sort[]]
+\function back.unmentioned() [function[back.children]] -[function[back.mentioned]]
+
+<%if [function[back.children]limit[1]] %>
+<div class="westhane-children-box">
+<div class="westhane-children-header">Children</div>
+<$wikify name="westhane.pal.bg" text="<<colour tag-background>>">
+<$wikify name="westhane.pal.a" text="<<colour foreground>>">
+<$wikify name="westhane.pal.b" text="<<colour background>>">
+<ul class="westhane-children threecolumns">
+<$list filter="[function[back.unmentioned]]" variable="child">
+<li><$link to=<<child>>><$text text=<<child>>/></$link><$transclude $variable="westhane.abbr-pills" tiddler=<<child>>/></li>
+</$list>
+<%if [function[back.mentioned]limit[1]] %>
+<li class="westhane-children-mentioned">
+<details>
+<summary>Mentioned<$text text={{{ [function[back.mentioned]count[]addprefix[ (]addsuffix[)]] }}}/><$text text=" "/><span class="westhane-children-toggle"/></summary>
+<ul>
+<$list filter="[function[back.mentioned]]" variable="child">
+<li><$link to=<<child>>><$text text=<<child>>/></$link><$transclude $variable="westhane.abbr-pills" tiddler=<<child>>/></li>
+</$list>
+</ul>
+</details>
+</li>
+<%endif%>
+</ul>
+</$wikify>
+</$wikify>
+</$wikify>
+</div>
+<%endif%>
+
+<div class="westhane-backmatter-timeline">
+<$let timelineTiddler=<<backmatterTiddler>>><$transclude $tiddler="$:/westhane/Template/Timeline" $mode="block"/></$let>
+</div>

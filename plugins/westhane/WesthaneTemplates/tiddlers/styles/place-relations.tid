@@ -1,0 +1,38 @@
+title: $:/westhane/styles/place-relations
+tags: $:/tags/Stylesheet
+code-body: yes
+
+\rules only macrocallinline
+
+.place-relations {
+	float: right;
+	width: 15em;
+	max-width: 45%;
+	margin: 0 0 1em 1.5em;
+	padding: 0.2em 0 0.4em 0.9em;
+	border-left: 1px solid <<colour muted-foreground>>;
+	font-size: 0.9em;
+}
+
+.place-relations h3 {
+	margin: 0.5em 0 0.2em;
+	font-size: 1em;
+	font-weight: bold;
+}
+
+.place-relations ul {
+	margin: 0;
+	padding-left: 1.2em;
+}
+
+.place-relations-clear {
+	clear: both;
+}
+
+.place-hooks {
+	margin-top: 1em;
+}
+
+.place-hooks li {
+	margin-bottom: 0.4em;
+}

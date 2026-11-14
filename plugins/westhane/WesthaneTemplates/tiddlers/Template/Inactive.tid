@@ -1,0 +1,31 @@
+title: $:/westhane/Template/Inactive
+code-body: yes
+created: 20261103010000000
+modified: 20261110210000000
+
+\whitespace trim
+
+<!-- Body for every Inactive tiddler, chosen by
+     $:/westhane/Template/Inactive/Cascade ahead of the Character, Place,
+     Portrait and Standard bodies. Shows the sidebar, frontmatter,
+     the tiddler's own text, then backmatter. -->
+
+<div class="westhane-info-host">
+
+<$let infoTiddler=<<currentTiddler>>><$transclude $tiddler="$:/westhane/Template/Info" $mode="block"/></$let>
+
+<$let frontmatterTiddler=<<currentTiddler>>>
+
+<$transclude $tiddler="$:/westhane/Part/Frontmatter" $mode="block"/>
+
+</$let>
+
+<$transclude $tiddler={{{ [{$:/layout}match[$:/plugins/BTC/TiddlyFlex/ui/Layout]then[$:/plugins/BTC/TiddlyFlex/ui/ViewTemplate/body/default]else[$:/core/ui/ViewTemplate/body/default]] }}} $mode="block"/>
+
+<$let backmatterTiddler=<<currentTiddler>>>
+
+<$transclude $tiddler="$:/westhane/Part/Backmatter" $mode="block"/>
+
+</$let>
+
+</div>

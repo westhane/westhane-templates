@@ -1,0 +1,10 @@
+{
+  "title": "$:/plugins/westhane/WesthaneTemplates",
+  "name": "WesthaneTemplates",
+  "description": "Westhane custom view templates (Character, Place, System, Standard, Inactive) with info box, front/backmatter and timeline",
+  "author": "Westhane",
+  "plugin-type": "plugin",
+  "list": "readme",
+  "version": "3.3.0",
+  "core-version": ">=5.3.0"
+}

@@ -1,0 +1,56 @@
+title: $:/westhane/Template/Place/Map
+caption: Map
+code-body: yes
+
+\whitespace trim
+
+<$let currentTiddler=<<graphTiddler>>>
+
+<$graph>
+
+<<graph-toolbar>>
+
+<!-- autofit / autofitMaxScale: fit to show all nodes when this tab opens.
+     hideControls: keep vis-network's own edit bar folded away.
+     deselect: clicking empty canvas clears the selection and its edges. -->
+
+<$properties $for="graph" background=<<placeImage>> autofit="yes" autofitMaxScale="1.2" hideControls="yes"
+	deselect=<<graph-deselect-actions>> />
+
+<!-- select computes the family once and stores it. Wrap the action in
+     <$action-delay $ms="0"> if you ever want the click to register before
+     the edges redraw. -->
+
+<$properties physics="no"
+	actions="<$action-navigate $to=<<nodeTiddler>>/>"
+	select=<<graph-select-actions>>>
+
+<$properties $filter="[all[]] :filter[<..currentTiddler>getindex{!!title}]" physics="no">
+
+<$properties.persistent $dataTiddler=<<currentTiddler>> >
+
+<$properties.settings>
+
+<$nodes.writable $field="filter">
+
+<$node.default/>
+
+<$edges.typed $editable="yes">
+<%if [<toTiddler>!match<currentTiddler>] %>
+<%if [<fieldName>match[parent]] %>
+<%if [function[graph.showedge]] %>
+<$edge $id=<<id>> />
+<%endif%>
+<%elseif [<fieldName>!match[child]] %>
+<$edge $id=<<id>> />
+<%endif%>
+<%endif%>
+</$edges.typed>
+
+</$nodes.writable>
+</$properties.settings>
+</$properties.persistent>
+</$properties>
+</$properties>
+</$graph>
+</$let>

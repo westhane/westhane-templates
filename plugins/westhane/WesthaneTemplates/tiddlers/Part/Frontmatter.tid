@@ -1,0 +1,27 @@
+title: $:/westhane/Part/Frontmatter
+code-body: yes
+created: 20261110180000000
+modified: 20261110210000000
+
+\whitespace trim
+
+<!-- Frontmatter part: one paragraph before body1 (the tiddler's own text).
+     Transclude with frontmatterTiddler set to the tiddler being shown.
+     The summarytext field (rendered inline, so write it as one paragraph),
+     then the sentence "Part of [[Parent]]." Either half is left out when
+     its field is empty; nothing renders when both are.
+     Add new frontmatter content here. -->
+
+\function front.parent() [<frontmatterTiddler>get[parent]]
+
+<%if [<frontmatterTiddler>has[summarytext]] [function[front.parent]] +[limit[1]] %>
+<p class="westhane-frontmatter">
+<%if [<frontmatterTiddler>has[summarytext]] %>
+<span class="westhane-summary"><$transclude $tiddler=<<frontmatterTiddler>> $field="summarytext" $mode="inline"/></span>
+<%endif%>
+<%if [function[front.parent]] %>
+<%if [<frontmatterTiddler>has[summarytext]] %><$text text=" "/><%endif%>
+<$text text="Part of "/><$link to=<<front.parent>>><$text text=<<front.parent>>/></$link><$text text="."/>
+<%endif%>
+</p>
+<%endif%>

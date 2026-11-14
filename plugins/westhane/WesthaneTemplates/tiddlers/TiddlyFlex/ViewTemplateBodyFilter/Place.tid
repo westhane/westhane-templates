@@ -1,0 +1,5 @@
+title: $:/westhane/TiddlyFlex/ViewTemplateBodyFilter/Place
+tags: $:/tags/TiddlyFlex/ViewTemplateBodyFilter
+list-before: $:/config/TiddlyFlex/ViewTemplateBodyFilters/default
+
+[all[current]] :filter[function[type.is],<currentTiddler>,[Place]] +[then[$:/westhane/Template/Place]]

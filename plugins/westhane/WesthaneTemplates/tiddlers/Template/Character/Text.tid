@@ -1,0 +1,7 @@
+title: $:/westhane/Template/Character/Text
+caption: Text
+code-body: yes
+
+<$tiddler tiddler=<<characterTiddler>>>
+<$transclude $tiddler="$:/core/ui/ViewTemplate/body/default" $mode="block"/>
+</$tiddler>

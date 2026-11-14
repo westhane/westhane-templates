@@ -1,0 +1,6 @@
+title: $:/westhane/TiddlyGraph/styles/PlaceMap
+tags: $:/tags/Stylesheet
+
+.tc-tab-content .graph-engine-vis-network {
+	height: 800px;
+}

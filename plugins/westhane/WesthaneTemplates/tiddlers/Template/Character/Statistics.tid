@@ -1,0 +1,10 @@
+title: $:/westhane/Template/Character/Statistics
+caption: Statistics
+code-body: yes
+
+\whitespace trim
+<$tiddler tiddler=<<characterTiddler>>>
+<$let statSystem={{{ [<characterTiddler>get[stat-system]] ~[{$:/config/westhane/StatSystem}] }}}>
+<$transclude $tiddler=<<statSystem>> $mode="block"/>
+</$let>
+</$tiddler>

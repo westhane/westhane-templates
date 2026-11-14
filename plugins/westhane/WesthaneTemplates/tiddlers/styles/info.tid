@@ -1,0 +1,28 @@
+title: $:/westhane/styles/info
+tags: $:/tags/Stylesheet
+code-body: yes
+modified: 20261111000000000
+
+\rules only macrocallinline
+
+/* Wrapper: contains the floated box so it can't spill into the next tiddler */
+.westhane-info-host {
+	display: flow-root;
+}
+
+.westhane-info {
+	float: right;
+	width: 15em;
+	max-width: 45%;
+	margin: 0 0 1em 1.5em;
+	font-size: 0.9em;
+}
+
+.westhane-info-portrait {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin-bottom: 0.5em;
+	background: <<colour tiddler-editor-background>>;
+	border-radius: 4px;
+}

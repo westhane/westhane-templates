@@ -1,0 +1,7 @@
+title: $:/westhane/Template/Inactive/Cascade
+tags: $:/tags/ViewTemplateBodyFilter
+list-before: 
+created: 20261103010000000
+modified: 20261103020000000
+
+[all[current]tag[Inactive]!is[system]!tag[System]!tag[Type]] +[then[$:/westhane/Template/Inactive]]

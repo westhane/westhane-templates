@@ -1,0 +1,18 @@
+title: $:/westhane/styles/abbr-pills
+tags: $:/tags/Stylesheet
+type: text/css
+created: 20261110120000000
+modified: 20261110120000000
+
+/* Abbreviation pills ($:/westhane/procedures/abbr-pills).
+   font-size on the link shrinks the whole pill (text and padding), since
+   the pill's sizes are in em. */
+.westhane-abbr-link {
+	font-size: 75%;
+	margin-left: 0.3em;
+	vertical-align: middle;
+	text-decoration: none;
+}
+.westhane-abbr-link:hover .westhane-abbr-pill {
+	text-decoration: underline;
+}

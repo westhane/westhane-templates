@@ -1,0 +1,6 @@
+title: $:/westhane/Template/Standard/Cascade
+tags: $:/tags/ViewTemplateBodyFilter
+list-before: $:/config/ViewTemplateBodyFilters/default
+modified: 20261110230000000
+
+[all[current]!is[system]!tag[System]!tag[Type]!tag[Flag]] :filter[function[type.root],<currentTiddler>else[none]!match[Character]!match[Place]] +[then[$:/westhane/Template/Standard]]

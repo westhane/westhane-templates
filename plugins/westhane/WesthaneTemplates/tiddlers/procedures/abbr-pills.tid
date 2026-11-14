@@ -1,0 +1,43 @@
+title: $:/westhane/procedures/abbr-pills
+tags: $:/tags/Global
+type: text/vnd.tiddlywiki
+created: 20261110120000000
+modified: 20261111010000000
+
+\procedure westhane.abbr-pills.body(tiddler)
+\whitespace trim
+<$list filter="[<tiddler>tags[]tag[Type]] :filter[function[path.root],<currentTiddler>has[abbreviation]] :sort:string[function[path.root],<currentTiddler>get[abbreviation]] [<tiddler>tags[]has[abbreviation]!tag[Type]sort[abbreviation]]" variable="tag">
+<$let src={{{ [<tag>tag[Type]] :map[function[path.root],<currentTiddler>] ~[<tag>] }}} bg={{{ [<src>get[color]] ~[<westhane.pal.bg>] }}}>
+<$wikify name="fg" text="""<$macrocall $name="contrastcolour" target=<<bg>> fallbackTarget=<<westhane.pal.bg>> colourA=<<westhane.pal.a>> colourB=<<westhane.pal.b>>/>""">
+<$link to=<<tag>> tooltip=<<tag>> overrideClass="westhane-abbr-link">
+<span class="tc-tag-label westhane-abbr-pill" style.background-color=<<bg>> style.color=<<fg>>>
+<$text text={{{ [<src>get[abbreviation]] }}}/>
+</span>
+</$link>
+</$wikify>
+</$let>
+</$list>
+\end
+
+\procedure westhane.abbr-pills(tiddler)
+\whitespace trim
+<!-- One coloured pill per tag of <<tiddler>> that has an abbreviation field.
+     A Type tag shows its root type's abbreviation and color (Date -> Event,
+     via path.root); the link and hover still name the tag itself.
+     Type pills come first, sorted by abbreviation, then status pills.
+     Background = the color field, else the palette's tag-background.
+     Text colour is picked for contrast. Hover shows the full tag name.
+     Palette colours come from an enclosing westhane.with-palette if there
+     is one (fast path for long lists); otherwise they are resolved here. -->
+<%if [<westhane.pal.a>!is[blank]] %>
+<$transclude $variable="westhane.abbr-pills.body" tiddler=<<tiddler>>/>
+<%else%>
+<$wikify name="westhane.pal.bg" text="<<colour tag-background>>">
+<$wikify name="westhane.pal.a" text="<<colour foreground>>">
+<$wikify name="westhane.pal.b" text="<<colour background>>">
+<$transclude $variable="westhane.abbr-pills.body" tiddler=<<tiddler>>/>
+</$wikify>
+</$wikify>
+</$wikify>
+<%endif%>
+\end

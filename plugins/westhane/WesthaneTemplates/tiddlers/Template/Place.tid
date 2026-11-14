@@ -1,0 +1,21 @@
+title: $:/westhane/Template/Place
+code-body: yes
+
+\whitespace trim
+
+<!-- Tab state lives under $:/temp/ so it is never written to the saved file. -->
+
+<$let placeTiddler=<<currentTiddler>> baseTab={{{ [<currentTiddler>get[base-state]trim[]lowercase[]match[map]then[$:/westhane/Template/Place/Map]else[$:/westhane/Template/Place/Text]] }}} placeImage={{!!image}} graphTiddler={{{ [<currentTiddler>addprefix[$:/graph/]] }}} tabState={{{ [<currentTiddler>addprefix[$:/temp/place-tab/]] }}} hasMap={{{ [<placeTiddler>has[image]] [<graphTiddler>has[filter]] [<placeTiddler>get[base-state]trim[]lowercase[]match[map]] +[limit[1]] }}}>
+
+<!-- The Map tab shows only when there is map data: an image field (the map
+     background), nodes saved in $:/graph/<title>, or base-state: map (use that
+     to open an empty map and start placing nodes). Without it, the Text
+     template is shown with no tab bar. -->
+
+<%if [<hasMap>!is[blank]] %>
+<$macrocall $name="tabs" tabsList="$:/westhane/Template/Place/Text $:/westhane/Template/Place/Map" default=<<baseTab>> explicitState=<<tabState>> />
+<%else%>
+<$transclude $tiddler="$:/westhane/Template/Place/Text" $mode="block"/>
+<%endif%>
+
+</$let>

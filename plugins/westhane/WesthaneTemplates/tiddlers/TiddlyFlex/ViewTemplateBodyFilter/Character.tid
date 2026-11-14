@@ -1,0 +1,5 @@
+title: $:/westhane/TiddlyFlex/ViewTemplateBodyFilter/Character
+tags: $:/tags/TiddlyFlex/ViewTemplateBodyFilter
+list-before: $:/config/TiddlyFlex/ViewTemplateBodyFilters/default
+
+[all[current]] :filter[function[type.is],<currentTiddler>,[Character]] +[then[$:/westhane/Template/Character]]

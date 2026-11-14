@@ -1,0 +1,22 @@
+title: $:/westhane/Template/Info
+code-body: yes
+modified: 20261111000000000
+
+\whitespace trim
+
+<!-- Sidebar part: information box floated right of body1. Transclude with
+     infoTiddler set to the tiddler being shown. Holds the portrait; the box
+     appears only when it has content. Add new sections here.
+     Parent and children are not shown here: the parent is in the
+     frontmatter ($:/westhane/Part/Frontmatter), children in the backmatter
+     ($:/westhane/Part/Backmatter). -->
+
+\function info.portrait() [<infoTiddler>has[image]] :map:flat[function[type.of],<currentTiddler>] :intersection[enlist{$:/westhane/config/PortraitTags}] +[limit[1]]
+
+<%if [function[info.portrait]] +[limit[1]] %>
+<div class="westhane-info">
+<%if [function[info.portrait]] %>
+<$image source={{{ [<infoTiddler>get[image]] }}} class="westhane-info-portrait"/>
+<%endif%>
+</div>
+<%endif%>
